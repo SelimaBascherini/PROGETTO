@@ -25,12 +25,16 @@ export async function insertUser(user) {
   try {
     await client.connect()
     const database = client.db(process.env.NAME_DB);
-    //creo la collection su ATLAS, in questo caso la coll. degli user
-    //su Browse Collections e la chiamo users. 
     const usersCollection = database.collection("users");
     const result = await usersCollection.insertOne(user);
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
+  } catch (err) {
+      return(err.code)
+      //MongoDb ritorna un errore il cui code è 11000: 
+      //è il codice associato all'errore dell'username non univoco
+      //se abbiamo 11000 ritorniamo tale valore come risultato della promise
+      //e lo gestiamo server side.
   } finally {
-    await client.close();
+      await client.close();
   }
 }

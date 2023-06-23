@@ -6,3 +6,13 @@
 img {
     width: 500px;
 }
+
+.invisibile {
+    position: absolute;
+    left: -9999px;
+}
+
+.error{
+    background-color: #B983FF;
+    color: white;
+}
