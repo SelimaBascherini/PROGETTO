@@ -14,7 +14,7 @@ app.use(session({
   secret: 'keyboard cat',      // stringa del middleware per marcare le chiamate
   resave: false,
   saveUninitialized: true,
-  cookie: {}
+  cookie: {maxAge: 100000}
 }))
 
 runConnection()  //connect to DB

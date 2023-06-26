@@ -37,7 +37,7 @@ body {
     justify-content: space-evenly;
 }
 
-.login-signup a {
+.login-signup a, .link {
     display: inline-block;
     padding: 10px 30px;
     background: rgb(185,131,255);
@@ -47,6 +47,7 @@ body {
     color: black;
     border-radius: 30px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 input {
