@@ -38,3 +38,17 @@ export async function insertUser(user) {
       await client.close();
   }
 }
+
+export async function findUser(user) {
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);  
+    const usersCollection = database.collection("users");  
+    let foundUser = await usersCollection.findOne(user)
+    return foundUser
+  }catch(err) {
+      console.log(err);
+  }finally {
+      await client.close();
+  }
+}

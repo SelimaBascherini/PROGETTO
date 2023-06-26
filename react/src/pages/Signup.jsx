@@ -31,7 +31,7 @@ export function Signup (){
         } else {
             setError('');            
             try {
-                const res = await axios.post('http://localhost:3000/signup', 
+                const res = await axios.post('http://localhost:8000/signup', 
                 { email,username,password });
                 if (res.status === 201) {
                     setSubmitted(true);
