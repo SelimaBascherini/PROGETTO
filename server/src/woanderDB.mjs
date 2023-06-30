@@ -52,3 +52,34 @@ export async function findUser(user) {
       await client.close();
   }
 }
+
+export async function insertTrip(trip) {  
+  //funzione che sarà chiamata ogniqualvolta si vorrà inserire qualcosa in una collection (che è un oggetto)
+  //se ad esempio viene chiamata insertUser avrà come parametro lo user da inserire insertUser(user)
+    try {
+      await client.connect()
+      const database = client.db(process.env.NAME_DB);
+      const usersCollection = database.collection("trips");
+      const result = await usersCollection.insertOne(trip);
+      console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    } catch (err) {
+        return(err.code)
+    } finally {
+        await client.close();
+    }
+  }
+
+  export async function findTrips() {
+    try {
+      await client.connect()
+      const database = client.db(process.env.NAME_DB);  
+      const tripsCollection = database.collection("trips");  
+      let foundTrips = await tripsCollection.find().toArray()
+      return foundTrips
+    }catch(err) {
+        console.log(err);
+    }finally {
+        await client.close();
+    }
+  }
+  

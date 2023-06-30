@@ -1,12 +1,9 @@
-* {
-    box-sizing: border-box;
-    font-size: 18px;
-}
-
-body {
+.background {
     background-image: url(../Assets/calaCoticcio.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+    height: 100vh;
 }
 
 .container {
@@ -71,3 +68,30 @@ input::placeholder {
     color: hsl(236, 92%, 66%);
     opacity: 0.5;
   }
+
+
+.invisibile {
+    position: absolute;
+    left: -9999px;
+}
+
+.error{
+    background-color: #B983FF;
+    color: white;
+}
+
+.gradientButton {
+    background: linear-gradient(90deg, rgba(185,131,255,1) 1%, rgba(185,131,255,1) 15%, rgba(148,218,255,1) 100%);
+    border-radius: 30px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    width: 100px;
+
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
