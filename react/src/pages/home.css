@@ -1,6 +1,7 @@
 :root {
   --line: 1px solid #D4D2D2;
   --bgGrad: linear-gradient(90deg, rgba(185,131,255,1) 1%, rgba(185,131,255,1) 15%, rgba(148,218,255,1) 100%);
+  --paletteBlue: #94daffa6; 
 }
 
 .profilePic {
@@ -40,7 +41,7 @@
   margin-top: 100px;
 }
 
-.linkSection, .tripCards {
+.linkSection, .viewCards {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -49,7 +50,6 @@
 
 .linkSection {
   flex-basis: 20%;
-  /* flex-direction: column; */
   border-right: var(--line);
 }
 
@@ -65,16 +65,33 @@ footer {
   padding: 20px;
 }
 
-.tripCards {
+.viewCards {
   flex-basis: 80%;
   background-color: #F8F8F8;
 }
 
-.tripCards > div {
+.viewCards > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 60px;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.card {
+  border: var(--line);
+  width: 500px;
+  height: 250px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paletteBlue);
 }
 
 h1{
@@ -97,10 +114,25 @@ nav > div {
   border-radius: 30px;
   border: none;
   outline: none;
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  cursor: pointer;
 }
 
-#faPlus, #faGears {
+.newTripBtn{
+  display: flex;
+  justify-content: space-between;
+  border: var(--line);
+  border-radius: 30px;
+  align-items: center;
+  padding-left: 20px;
+  margin-right: 30px;
+}
+
+#faPlus{
+  height: 20px;
+}
+#faGears {
   height: 40px;
 }

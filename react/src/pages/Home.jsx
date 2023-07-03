@@ -7,6 +7,7 @@ import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faGears } from '@fortawesome/free-solid-svg-icons'
 import  Modal from "./modal"
+import { TripCard } from '../components/cards'
 
 export function Home() {
 
@@ -15,7 +16,7 @@ export function Home() {
 
     useEffect(() => {
         async function tripsCall(){
-            const res = await axios.get('http://localhost:8000/home/trips')
+            const res = await axios.get('http://localhost:8000/home')
             const tripNames = [];
             for (let i = 0; i < res.data.length; i++) {
             const trip = res.data[i];
@@ -30,7 +31,11 @@ export function Home() {
     return(
         <main className="homepage">
             <header>
-                <img className="logo" src={logo} alt="logo"/>
+                <img className="logo" src={logo} alt="logo"/>   
+                <div className='newTripBtn'>
+                    <span>Quale viaggio organizzeremo oggi?</span>
+                    <button className="openModalBtn" onClick={() => {setOpenModal(true)}}><FontAwesomeIcon id='faPlus' icon={faPlus} /></button>
+                </div>                 
                 <img className="profilePic" src={profilePic} alt="profile"/>
             </header>
             <section className="mainInterface">
@@ -52,24 +57,21 @@ export function Home() {
                     <Link to='/help'>Help & Support</Link>
                 </footer>
                 </section>
-                <section className="tripCards">
+                <section className="viewCards">
                     <div>
                         <h1>Home</h1>
-                        <span>Quale viaggio organizzeremo oggi?</span>
+                        <span></span>
                     </div>
-                    <article>
+                    <main>
                         {
                             trips.map((t) =>
-                                <div name={t}></div>
+                                <TripCard name={t}/>
                             )
                         }
-                    </article>
-                    <button className="openModalBtn" onClick={() => {setOpenModal(true)}}><FontAwesomeIcon id='faPlus' icon={faPlus} /></button>
+                    </main>
                 </section>
             </section>            
 {openModal && <Modal closeModal={setOpenModal}/>}
         </main>
     )
 }
-
-

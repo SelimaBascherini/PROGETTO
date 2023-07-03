@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-export function tripCard({name}) {
+export function TripCard({name}) {
     return(
-        <div>{name}</div>
-    )
-  }
+        <div className="card">
+            <Link to={`/${name}`}>{name}</Link>
+        </div>
+    ) 
+  }  

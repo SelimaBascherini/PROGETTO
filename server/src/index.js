@@ -73,7 +73,7 @@ app.post('/home/trip', async (req, res) => {
   }
 })  
 
-app.get('/home/trips', async(req,res) => {
+app.get('/home', async(req,res) => {
   res.json(await findTrips())
 });
 

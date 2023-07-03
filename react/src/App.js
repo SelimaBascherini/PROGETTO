@@ -18,10 +18,8 @@ function App() {
          </Route>
          <Route path="/home">
           <Route index element={<Home/>} />
-          {/* <Route path="" element={< />} />
-          <Route path="" element={< />} /> */}
+          <Route path="" /*element={<sarà il componente fisso che renderizza le schede}*//>
          </Route>
-
        </Routes>
      </BrowserRouter>   
   )
