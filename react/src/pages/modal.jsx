@@ -12,7 +12,6 @@ export default function Modal({closeModal}) {
     const [from, setFrom] = useState ('');
     const [to, setTo] = useState ('');
     const [error, setError] = useState('');
-    // const [trips, setTrips] = useState(['porca', 'puttana', 'eva'])
 
     const navigate = useNavigate();
 
@@ -35,23 +34,15 @@ export default function Modal({closeModal}) {
             setError('');            
             try {
                 const res = await axios.post('http://localhost:8000/home/trip', 
-                { tripName, from, to, lists:{} });
-                if (res.status === 201) {
-                    navigate(`/home/${tripName}`)
-                } 
+                { tripName, from, to, elements:[] });
+                // if (res.status === 201) {
+                //     navigate(`/home/${tripName}`)
+                // } 
             } catch (err) {
                 setError(`Non è possibile inserire la scheda. Riprova più tardi.`)
             }
         }
-    }
-
-    //  const handleTrips = async () => {
-    //      const newTripsArray = [...trips];
-    //      newTripsArray.push(tripName);
-    //      setTrips(newTripsArray);
-    //      setTripName("");
-    //    };
-    
+    }    
 
     return (
         <section className='modalBg'>
@@ -75,7 +66,3 @@ export default function Modal({closeModal}) {
         </section>
     )
 }
-
-//prossimo step: onClick del crea per creare il viaggio nel db con insertTrip. 
-// una volta creato il trip nel database, visualizzare nella home e sotto il link
-// del router la scheda creata (col nome e le date prese dal db)

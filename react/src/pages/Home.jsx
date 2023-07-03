@@ -9,24 +9,29 @@ import { faPlus, faGears } from '@fortawesome/free-solid-svg-icons'
 import  Modal from "./modal"
 import { TripCard } from '../components/cards'
 
-export function Home() {
-
-    const [openModal, setOpenModal] = useState(false)
+export function useTrips(){
     const [trips, setTrips] = useState([])
 
     useEffect(() => {
         async function tripsCall(){
-            const res = await axios.get('http://localhost:8000/home')
-            const tripNames = [];
+            const res = await axios.get('http://localhost:8000/home/trips')
+            const tripGroup = [...trips];
             for (let i = 0; i < res.data.length; i++) {
-            const trip = res.data[i];
-            const tripName = trip.tripName;
-            tripNames.push(tripName);
+                const trip = res.data[i];
+                tripGroup.push(trip);
             }
-            setTrips(tripNames)
+            setTrips(tripGroup)
         }
         tripsCall()
     }, [])
+    return trips
+}
+
+export function Home() {
+
+    const trips = useTrips()
+    console.log(trips);
+    const [openModal, setOpenModal] = useState(false)
 
     return(
         <main className="homepage">
@@ -48,7 +53,7 @@ export function Home() {
                     <nav>
                         {
                         trips.map((t) =>
-                            <div><Link to={`/${t}`} >{t}</Link></div>
+                            <div><Link to={`/${t.tripName}`} >{t.tripName}</Link></div>
                         )
                         }
                     </nav> 
@@ -65,7 +70,7 @@ export function Home() {
                     <main>
                         {
                             trips.map((t) =>
-                                <TripCard name={t}/>
+                                <TripCard name={t.tripName} from={t.from} to={t.to} elements={t.elements}/>
                             )
                         }
                     </main>
