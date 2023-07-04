@@ -21,7 +21,7 @@
   height: 100vh;
 }
 
-.homepage header {
+.fixedHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,15 +53,33 @@
   border-right: var(--line);
 }
 
+.tripBar {
+  display: flex;
+  flex-direction: column;
+}
+
+.tripBar div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tripBar button {
+  outline: none;
+  border: none;
+  background-color: white;
+}
+
 footer {
   display: flex;
   justify-content: space-between;
+  background-color: white;
   align-items: center;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 20%;
-  border-top: var(--line);
+  border: var(--line);
   padding: 20px;
 }
 
@@ -71,27 +89,52 @@ footer {
 }
 
 .viewCards > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
 }
 
 main {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
 }
 
 .card {
   border: var(--line);
   width: 500px;
-  height: 250px;
+  height: 450px;
   border-radius: 15px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   background: var(--paletteBlue);
+  padding: 30px;
+  margin: 0 15px 15px 0;
+}
+
+.card > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 30px;
+}
+
+.card header section{
+  display: flex;
+  flex-direction: column;
+}
+
+.card header div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card header span {
+font-size: 14px;
+margin-left: 20px ;
+}
+
+.card main > div {
+  display:flex;
+  gap: 20px;
+  align-items: center;
 }
 
 h1{
@@ -108,6 +151,26 @@ nav{
 nav > div {
   margin-bottom: 20px;
 }
+
+.listInput {
+  width: 60px;
+}
+
+.scrollableSection{
+  height: 300px;
+  overflow: auto;
+  padding: 15px;
+}
+
+.scrollableSection ul {
+  list-style-type: none;
+}
+
+.scrollableSection ul li {
+  padding: 5px;
+}
+
+
 
 .openModalBtn{
   background: var(--bgGrad);
@@ -135,4 +198,7 @@ nav > div {
 }
 #faGears {
   height: 40px;
+}
+#faTrash{
+  height: 12px;
 }

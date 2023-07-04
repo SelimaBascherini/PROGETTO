@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser' //Cookie-parser - used to parse cookie header to store data on the browser whenever a session is established on the server-side.
 import 'dotenv/config'
-import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement} from './woanderDB.mjs'
+import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement, deleteTrips} from './woanderDB.mjs'
 import cors from 'cors';
 
 const app = express()
@@ -90,9 +90,12 @@ app.get('/logout',(req,res) => {
 });
 //fare la chiamata per la logout lato client
 
+app.delete('/home/:tripDeleted', async (req, res) =>{
+  const tripDeleted = req.params.tripDeleted
+  let result = await deleteTrips(tripDeleted)
+  res.status(201).end()
+}) 
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-// creare collection nel db per: users, schede, liste (sono insiemi omogenei di dati), (itinerari forse)
-// si connettono tra loro attraverso un id univoco, lo username, ecc

@@ -6,7 +6,7 @@ import './modal.css'
 import './welcome.css'
 
 
-export default function Modal({closeModal}) {
+export default function Modal({closeModal, addTrips, arrayTrips}) {
 
     const [tripName, setTripName] = useState ('');
     const [from, setFrom] = useState ('');
@@ -35,9 +35,10 @@ export default function Modal({closeModal}) {
             try {
                 const res = await axios.post('http://localhost:8000/home/trip', 
                 { tripName, from, to, elements:[] });
-                // if (res.status === 201) {
-                //     navigate(`/home/${tripName}`)
-                // } 
+                if (res.status === 201) {
+                    addTrips([...arrayTrips, { tripName, from, to, elements: [] }]);
+                    navigate(`/home`)
+                } 
             } catch (err) {
                 setError(`Non è possibile inserire la scheda. Riprova più tardi.`)
             }

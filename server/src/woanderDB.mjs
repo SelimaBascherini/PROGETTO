@@ -76,7 +76,7 @@ export async function insertTrip(trip) {
         const elementCollection = database.collection("trips");
         const result = await elementCollection.updateOne(
         { tripName: elementName },
-        { $push: { elements: [newElement] }}
+        { $push: { elements: newElement }}
         )
       } catch (err) {
           return(err.code)
@@ -99,3 +99,16 @@ export async function insertTrip(trip) {
     }
   }
   
+  export async function deleteTrips(tripDeleted){
+    try {
+      await client.connect()
+      const database = client.db(process.env.NAME_DB);
+      const tripsCollection = database.collection("trips");
+      const query = { tripName: tripDeleted };
+      const result = await tripsCollection.deleteOne(query)
+    } catch (err) {
+        return(err.code)
+    } finally {
+        await client.close();
+    }
+  }
