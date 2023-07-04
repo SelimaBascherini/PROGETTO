@@ -69,6 +69,22 @@ export async function insertTrip(trip) {
     }
   }
 
+  export async function insertElement(elementName, newElement) {  
+      try {
+        await client.connect()
+        const database = client.db(process.env.NAME_DB);
+        const elementCollection = database.collection("trips");
+        const result = await elementCollection.updateOne(
+        { tripName: elementName },
+        { $push: { elements: [newElement] }}
+        )
+      } catch (err) {
+          return(err.code)
+      } finally {
+          await client.close();
+      }
+    }
+
   export async function findTrips() {
     try {
       await client.connect()

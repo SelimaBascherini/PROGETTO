@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser' //Cookie-parser - used to parse cookie header to store data on the browser whenever a session is established on the server-side.
 import 'dotenv/config'
-import {runConnection, insertUser, findUser, insertTrip, findTrips} from './woanderDB.mjs'
+import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement} from './woanderDB.mjs'
 import cors from 'cors';
 
 const app = express()
@@ -72,6 +72,13 @@ app.post('/home/trip', async (req, res) => {
         .send('Il viaggio è stato inserito correttamente')
   }
 })  
+
+app.put('/home/:name', async (req,res) => {  //passo anche all'URL la variabile
+  const elementName = req.params.name; //recupero name: Bali
+  const newElement = req.body; // recupero element {'item':'spazzolino', 'quantity':'2'}
+  let result = await insertElement(elementName, newElement)
+  res.status(201).end()
+})
 
 app.get('/home/trips', async(req,res) => {
   res.json(await findTrips())
