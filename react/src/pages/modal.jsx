@@ -38,6 +38,7 @@ export default function Modal({closeModal, addTrips, arrayTrips}) {
                 if (res.status === 201) {
                     addTrips([...arrayTrips, { tripName, from, to, elements: [] }]);
                     navigate(`/home`)
+                    closeModal(false)
                 } 
             } catch (err) {
                 setError(`Non è possibile inserire la scheda. Riprova più tardi.`)

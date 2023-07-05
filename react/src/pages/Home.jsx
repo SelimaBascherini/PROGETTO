@@ -5,7 +5,7 @@ import {useState, useEffect} from "react"
 import { Link } from "react-router-dom"
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faGears, faTrash} from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faGears, faTrash, faPen} from '@fortawesome/free-solid-svg-icons'
 import  Modal from "./modal"
 import { TripCard } from '../components/cards'
 
@@ -28,11 +28,25 @@ export function Home() {
     }, [])
         
     async function handleDeleteTrip(i){
-        let tripDeleted = trips[i]
-        const res = await axios.delete(`http://localhost:8000/home/${tripDeleted.tripName}`)
-        const newTrips = [...trips];
-        newTrips.splice(i, 1)
-        setTrips(newTrips)
+        try {
+            let tripDeleted = trips[i]
+            const res = await axios.delete(`http://localhost:8000/home/${tripDeleted.tripName}`)
+            if (res.status === 201) {
+                const newTrips = [...trips];
+                newTrips.splice(i, 1)
+                setTrips(newTrips)        
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function handleModifyTrip(i) {
+        // let tripDeleted = trips[i]
+        // const res = await axios.delete(`http://localhost:8000/home/${tripDeleted.tripName}`)
+        // const newTrips = [...trips];
+        // newTrips.splice(i, 1)
+        // setTrips(newTrips)
     }
         
     return(
@@ -55,9 +69,12 @@ export function Home() {
                     <nav className='tripBar'>
                         {
                         trips.map((t, i) =>
-                            <div>
-                                <Link key={i} to={`/${t.tripName}`} >{t.tripName}</Link>
-                                <button onClick={()=>handleDeleteTrip(i)}><FontAwesomeIcon id='faTrash' icon={faTrash} /></button>
+                            <div key={i}>
+                                <Link to={`/${t.tripName}`} >{t.tripName}</Link>
+                                <div>
+                                    <button onClick={()=>handleDeleteTrip(i)}><FontAwesomeIcon id='faTrash' icon={faTrash} /></button>
+                                    <button onClick={()=>handleModifyTrip(i)}><FontAwesomeIcon id='faPen' icon={faPen}/></button>
+                                </div>
                             </div>
                         )
                         }

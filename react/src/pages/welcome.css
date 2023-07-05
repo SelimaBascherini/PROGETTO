@@ -76,8 +76,9 @@ input::placeholder {
 }
 
 .error{
-    background-color: #B983FF;
-    color: white;
+    color: #fd0000;
+    font-weight:bold;
+    font-size: 12px;
 }
 
 .gradientButton {

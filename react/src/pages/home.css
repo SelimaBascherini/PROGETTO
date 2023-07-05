@@ -135,6 +135,8 @@ margin-left: 20px ;
   display:flex;
   gap: 20px;
   align-items: center;
+  justify-content: center ;
+
 }
 
 h1{
@@ -170,7 +172,18 @@ nav > div {
   padding: 5px;
 }
 
+.elementList {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.elementList div:first-child {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin-right: 60px;
+}
 
 .openModalBtn{
   background: var(--bgGrad);
@@ -199,6 +212,7 @@ nav > div {
 #faGears {
   height: 40px;
 }
-#faTrash{
+#faTrash, #faPen {
   height: 12px;
+  margin-right: 15px;
 }

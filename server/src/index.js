@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser' //Cookie-parser - used to parse cookie header to store data on the browser whenever a session is established on the server-side.
 import 'dotenv/config'
-import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement, deleteTrips} from './woanderDB.mjs'
+import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement, deleteTrips, deleteElement} from './woanderDB.mjs'
 import cors from 'cors';
 
 const app = express()
@@ -95,6 +95,15 @@ app.delete('/home/:tripDeleted', async (req, res) =>{
   let result = await deleteTrips(tripDeleted)
   res.status(201).end()
 }) 
+
+app.delete('/home/:name/elements/:deletedItem/:deletedQuantity', async (req, res) =>{
+  const name = req.params.name
+  const deletedItem = req.params.deletedItem
+  const deletedQuantity = req.params.deletedQuantity
+
+  let result = await deleteElement(name, deletedItem, deletedQuantity )
+  res.status(201).end()
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

@@ -69,46 +69,62 @@ export async function insertTrip(trip) {
     }
   }
 
-  export async function insertElement(elementName, newElement) {  
-      try {
-        await client.connect()
-        const database = client.db(process.env.NAME_DB);
-        const elementCollection = database.collection("trips");
-        const result = await elementCollection.updateOne(
-        { tripName: elementName },
-        { $push: { elements: newElement }}
-        )
-      } catch (err) {
-          return(err.code)
-      } finally {
-          await client.close();
-      }
-    }
-
-  export async function findTrips() {
-    try {
-      await client.connect()
-      const database = client.db(process.env.NAME_DB);  
-      const tripsCollection = database.collection("trips");  
-      let foundTrips = await tripsCollection.find().toArray()
-      return foundTrips
-    }catch(err) {
-        console.log(err);
-    }finally {
-        await client.close();
-    }
-  }
-  
-  export async function deleteTrips(tripDeleted){
+export async function insertElement(elementName, newElement) {  
     try {
       await client.connect()
       const database = client.db(process.env.NAME_DB);
-      const tripsCollection = database.collection("trips");
-      const query = { tripName: tripDeleted };
-      const result = await tripsCollection.deleteOne(query)
+      const elementCollection = database.collection("trips");
+      const result = await elementCollection.updateOne(
+      { tripName: elementName },
+      { $push: { elements: newElement }}
+      )
     } catch (err) {
         return(err.code)
     } finally {
         await client.close();
     }
   }
+
+export async function findTrips() {
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);  
+    const tripsCollection = database.collection("trips");  
+    let foundTrips = await tripsCollection.find().toArray()
+    return foundTrips
+  }catch(err) {
+      console.log(err);
+  }finally {
+      await client.close();
+  }
+}
+
+export async function deleteTrips(tripDeleted){
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);
+    const tripsCollection = database.collection("trips");
+    const query = { tripName: tripDeleted };
+    const result = await tripsCollection.deleteOne(query)
+  } catch (err) {
+      return(err.code)
+  } finally {
+      await client.close();
+  }
+}
+
+export async function deleteElement(name, deletedItem, deletedQuantity){
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);
+    const tripsCollection = database.collection("trips");
+    const result = await tripsCollection.updateOne(
+      { tripName: name }, // Filtra il documento specifico
+      { $pull: { elements: {item: deletedItem, quantity: deletedQuantity} } } // Rimuove l'oggetto con item e quantity specifici dall'array
+   )
+  } catch (err) {
+      return(err.code)
+  } finally {
+      await client.close();
+  }
+}
