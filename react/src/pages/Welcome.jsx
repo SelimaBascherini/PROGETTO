@@ -1,8 +1,8 @@
 import React from 'react';
-import {useState, useEffect} from "react"
-import './welcome.css'
+import {useState} from "react"
+import '../Assets/welcome.css'
 
-import logo from '../Assets/Woanderlist_Logo.png'
+import logo from '../Assets/images/Woanderlist_Logo.png'
 import axios from 'axios'
 import { Link } from "react-router-dom"
 import { useNavigate } from 'react-router-dom';

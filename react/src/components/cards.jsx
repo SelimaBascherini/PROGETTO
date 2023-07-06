@@ -1,11 +1,10 @@
-import { Link, useParams } from "react-router-dom"
 import {useState, useEffect} from "react"
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTrash} from '@fortawesome/free-solid-svg-icons'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
-export function TripCard({name, from, to, elements}) {
+export function TripCard({name, from, to, elements, id}) {
     const [error, setError] = useState('');
     const [item, setItem] = useState("")
     const [quantity, setQuantity] = useState('1');
@@ -57,7 +56,7 @@ export function TripCard({name, from, to, elements}) {
     return(
         <div className="card">
             <header>
-                <h2>{name}</h2>
+                <h2 id={id} className="marginScroll">{name}</h2>
                 <section>
                     <div>
                         <span>from:</span>

@@ -1,0 +1,71 @@
+:root {
+    --bgGrad: linear-gradient(90deg, rgba(185,131,255,1) 1%, rgba(185,131,255,1) 15%, rgba(148,218,255,1) 100%);
+  }
+
+.modalBg {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(200, 200, 200, 0.623);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.modalContainer {
+    width: 500px;
+    height: 500px;
+    padding: 10px;
+}
+
+.modalContainer, .dialogContainer {
+    border-radius: 12px; 
+    background-color: white; 
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; 
+    display: flex; 
+    flex-direction: column; 
+}
+  
+.modalContainer span {
+    text-align: center;
+    margin: 20px 0 50px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.closeBtn {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+  
+.closeBtn button {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#faXMark {
+    padding: 5px;
+    border-radius: 50px;
+}
+
+#faXMark:hover {
+    background: var(--bgGrad);
+}
+
+.dialogContainer {
+    margin: 0 20px;
+    position: fixed;
+    padding: 10px 30px 30px;
+}
+
+

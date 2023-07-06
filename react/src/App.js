@@ -1,7 +1,5 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Outlet, Link } from "react-router-dom"
-import logo from './Assets/Woanderlist_Logo.png'
 
 import { Signup, Login, Welcome } from './pages/Welcome';
 import { Home } from './pages/Home';
