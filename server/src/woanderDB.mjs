@@ -128,3 +128,25 @@ export async function deleteElement(name, deletedItem, deletedQuantity){
       await client.close();
   }
 }
+
+export async function editElement(name, oldItem, oldquantity, newElement){
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);
+    const tripsCollection = database.collection("trips");
+    const result = await tripsCollection.updateOne(
+      { tripName: name }, // Filtra il documento specifico
+      { $set: { 
+        "elements.$[el].item": newElement.item,
+        "elements.$[el].quantity": newElement.quantity 
+      }},
+      { arrayFilters: [{
+        "el.item": oldItem,
+        "el.quantity": oldquantity
+      }]})
+  } catch (err) {
+      return(err.code)
+  } finally {
+      await client.close();
+  }
+}

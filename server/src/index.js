@@ -2,8 +2,8 @@ import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser' //Cookie-parser - used to parse cookie header to store data on the browser whenever a session is established on the server-side.
 import 'dotenv/config'
-import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement, deleteTrips, deleteElement} from './woanderDB.mjs'
-import cors from 'cors';
+import {runConnection, insertUser, findUser, insertTrip, findTrips, insertElement, deleteTrips, deleteElement, editElement} from './woanderDB.mjs'
+import cors from 'cors';  
 
 const app = express()
 const port = 8000
@@ -77,6 +77,16 @@ app.put('/home/:name', async (req,res) => {  //passo anche all'URL la variabile
   const elementName = req.params.name; //recupero name: Bali
   const newElement = req.body; // recupero element {'item':'spazzolino', 'quantity':'2'}
   let result = await insertElement(elementName, newElement)
+  res.status(201).end()
+})
+
+app.put('/home/:name/elements/:oldItem/:oldQuantity', async (req,res) =>{
+  const elementName = req.params.name
+  const oldItem = req.params.oldItem
+  const oldQuantity = req.params.oldQuantity
+  const newElement = req.body; //recupero edited item e edited quantity 
+
+  let result = await editElement(elementName, oldItem, oldQuantity, newElement)
   res.status(201).end()
 })
 

@@ -52,6 +52,7 @@ export function Home() {
         // setTrips(newTrips)
     }
 
+
     const openDialogBox = (e) => {  //funzione per aprire la dialog
         setOpenDialog(true);    //cambia false a true
         setDialogPosition({ x: e.clientX, y: e.clientY }); // {x : numero y: numero}

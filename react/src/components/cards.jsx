@@ -1,43 +1,46 @@
 import {useState, useEffect} from "react"
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faTrash} from '@fortawesome/free-solid-svg-icons'
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faTrash, faCheck, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 export function TripCard({name, from, to, elements, id}) {
-    const [error, setError] = useState('');
-    const [item, setItem] = useState("")
-    const [quantity, setQuantity] = useState('1');
-    const [addedElements, setAddedElements] = useState([]);
+  const [error, setError] = useState('');
+  const [item, setItem] = useState("")
+  const [quantity, setQuantity] = useState('1');
+  const [addedElements, setAddedElements] = useState([]);
 
-    const elementName = { name };  //questa è una prop
-    const elementBody = { item, quantity };    //questi sono gli useState. Un oggetto con chiave e valore uguali {item:item, quantity:quantity} lo puoi scrivere come {item, quantity}
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editedItem, setEditedItem] = useState("");  //nuovi valori
+  const [editedQuantity, setEditedQuantity] = useState("1"); //nuovi valori
 
-    useEffect(() => {
-      setAddedElements(elements);
-    }, [elements]);
-  
-    const handleItems = async () => {
-      if (item !== "" && quantity !== "") {
-        setError("")
-        try {
-          const res = await axios.put(`http://localhost:8000/home/${name}`, {
-            item,
-            quantity,
-          });
-          if (res.status === 201) {
-            const newItem = { item, quantity };
-            setAddedElements([...addedElements, newItem]);
-            setItem('');
-            setQuantity('1');
-          }
-        } catch (error) {
-          console.error(error);
+  const [oldItem, setOldItem] = useState("");  //vecchi valori
+  const [oldQuantity, setOldQuantity] = useState(""); //vecchi valori
+
+  useEffect(() => {
+    setAddedElements(elements);
+  }, [elements]);
+
+  const handleItems = async () => {
+    if (item !== "" && quantity !== "") {
+      setError("")
+      try {
+        const res = await axios.put(`http://localhost:8000/home/${name}`, {
+          item,
+          quantity,
+        });
+        if (res.status === 201) {
+          const newItem = { item, quantity };
+          setAddedElements([...addedElements, newItem]);
+          setItem('');
+          setQuantity('1');
         }
-      } else {
-        setError('Inserisci tutti i campi')
+      } catch (error) {
+        console.error(error);
       }
-    };
+    } else {
+      setError('Inserisci tutti i campi')
+    }
+  };
 
   async function handleDeleteElement(i){  
     try {
@@ -53,47 +56,93 @@ export function TripCard({name, from, to, elements, id}) {
     }
   }
 
-    return(
-        <div className="card">
-            <header>
-                <h2 id={id} className="marginScroll">{name}</h2>
-                <section>
-                    <div>
-                        <span>from:</span>
-                        <span>{from}</span>
-                    </div>
-                    <div>
-                        <span>to:</span>
-                        <span>{to}</span>
-                    </div>
-                </section>
-            </header>
-            <main>
-                <div> 
-                    <input value={item} onChange={(e) => setItem(e.target.value)}></input>
-                    <input type="number" className="listInput" value={quantity} onChange={(e) => setQuantity(e.target.value)}></input>
-                    <button className="openModalBtn" onClick={handleItems}><FontAwesomeIcon id='faPlus' icon={faPlus} /></button>
-                </div>
-                <p className={error ? "error" : "invisibile"}>{error}</p>
-            </main>
-            <section className="scrollableSection">
-                <ul>
-                    {
-                        addedElements.map((el, i)=> (
-                            <li key={i} className="elementList">
-                              <div>
-                                  <span>{el.item}</span> 
-                                  <span>{el.quantity}</span>
-                              </div>
-                              <div>
-                                <FontAwesomeIcon id='faTrash' icon={faTrash} onClick={() => handleDeleteElement(i)}/>
-                                <FontAwesomeIcon id='faPen' icon={faPenToSquare} />
-                              </div>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </section>
-        </div>
-    ) 
-  }  
+  async function handleSaveChanges(i) {  
+    if (editedItem !== "" && editedQuantity !== "") {
+      setError("")
+      try {
+        const res = await axios.put(`http://localhost:8000/home/${name}/elements/${oldItem}/${oldQuantity}`, {
+          item: editedItem,
+          quantity: editedQuantity
+        })  
+        if(res.status === 201){
+          const editedElement = {item:editedItem, quantity:editedQuantity}
+          addedElements.splice(i, 1)
+          const newElement = [...addedElements, editedElement];
+          console.log('newElements riga 70: '+ JSON.stringify(newElement));
+          setAddedElements(newElement)
+          setEditingIndex(null);
+          setEditedItem("")
+          setEditedQuantity("1")
+          setOldItem("")
+          setOldQuantity("")
+        }
+      } catch (error) {
+          console.error(error);
+      }
+    } else {
+      setError('Inserisci tutti i campi')
+    }
+  }
+
+  const handleEditElement = (index, item, quantity) => {
+    setEditingIndex(index); // indice di quello che stiamo modificando
+    setOldItem(item);  //ho quelli vecchi
+    setOldQuantity(quantity); //quantità vecchia
+  };
+
+  return(
+      <div className="card">
+          <header>
+              <h2 id={id} className="marginScroll">{name}</h2>
+              <section>
+                  <div>
+                      <span>from:</span>
+                      <span>{from}</span>
+                  </div>
+                  <div>
+                      <span>to:</span>
+                      <span>{to}</span>
+                  </div>
+              </section>
+          </header>
+          <main>
+              <div> 
+                  <input value={item} onChange={(e) => setItem(e.target.value)}></input>
+                  <input type="number" className="listInput" value={quantity} onChange={(e) => setQuantity(e.target.value)}></input>
+                  <button className="openModalBtn" onClick={handleItems}><FontAwesomeIcon id='faPlus' icon={faPlus} /></button>
+              </div>
+              <p className={error ? "error" : "invisibile"}>{error}</p>
+          </main>
+          <section className="scrollableSection">
+              <ul>
+                  {addedElements.map((el, i)=> (
+                    <li key={i} className="elementList">
+                      <div>
+                          {editingIndex === i ? (
+                          <>
+                            <input value={editedItem} onChange={(e) => setEditedItem(e.target.value)}/>
+                            <input type="number" className="listInput" value={editedQuantity} onChange={(e) => setEditedQuantity(e.target.value)}/>
+                          </>
+                          ) : (
+                          <>
+                            <span>{el.item}</span> 
+                            <span>{el.quantity}</span>
+                          </>
+                          )}
+                      </div>
+                      <p className={error ? "error" : "invisibile"}>{error}</p>
+                      <div>
+                        <FontAwesomeIcon id='faTrash' icon={faTrash} onClick={() => handleDeleteElement(i)}/>
+                        {editingIndex === i ? (
+                          <FontAwesomeIcon id='faCheck' icon={faCheck} onClick={() => handleSaveChanges(i)} />
+                        ) : (
+                          <FontAwesomeIcon id="faPen" icon={faPenToSquare} onClick={() => handleEditElement(i, el.item, el.quantity)}/>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+              </ul>
+          </section>
+      </div>
+  ) 
+  }

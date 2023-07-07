@@ -228,7 +228,7 @@ nav > div {
   margin-right: 5px;
 }
 
-#faTrash, #faPen {
+#faTrash, #faPen, #faCheck{
   height: 12px;
   padding: 10px;
 }
