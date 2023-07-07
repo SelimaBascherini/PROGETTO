@@ -183,7 +183,7 @@ nav > div {
   padding: 5px;
 }
 
-.elementList {
+.elementList, .inputSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -194,6 +194,7 @@ nav > div {
   justify-content: space-between;
   flex-grow: 1;
   margin-right: 80px;
+  flex-direction: column;
 }
 
 .openModalBtn{
@@ -233,7 +234,7 @@ nav > div {
   padding: 10px;
 }
 
-#faTrash:hover, #faPen:hover {
+#faTrash:hover, #faPen:hover, #faCheck:hover  {
   background: var(--bgGrad);
   border-radius: 50px;
 }

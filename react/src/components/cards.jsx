@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faTrash, faCheck, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 export function TripCard({name, from, to, elements, id}) {
-  const [error, setError] = useState('');
+
+  const [errorPost, setErrorPost] = useState('');
+  const [error, setError] = useState('')
+
+
   const [item, setItem] = useState("")
   const [quantity, setQuantity] = useState('1');
   const [addedElements, setAddedElements] = useState([]);
@@ -22,7 +26,7 @@ export function TripCard({name, from, to, elements, id}) {
 
   const handleItems = async () => {
     if (item !== "" && quantity !== "") {
-      setError("")
+      setErrorPost("")
       try {
         const res = await axios.put(`http://localhost:8000/home/${name}`, {
           item,
@@ -38,7 +42,7 @@ export function TripCard({name, from, to, elements, id}) {
         console.error(error);
       }
     } else {
-      setError('Inserisci tutti i campi')
+      setErrorPost('Inserisci tutti i campi')
     }
   };
 
@@ -56,6 +60,11 @@ export function TripCard({name, from, to, elements, id}) {
     }
   }
 
+// i=1
+// [0, 1, 2, 3, 4, 5]
+// [0] [1] [2, 3, 4, 5]  
+// il nuovo 1 non è quello precedente. Si crea direttamente una copia del vecchio array aggiungendo al posto del precedente lasciato fuori dalla copia effettuata con slice quello nuovo che vogliamo.
+
   async function handleSaveChanges(i) {  
     if (editedItem !== "" && editedQuantity !== "") {
       setError("")
@@ -66,9 +75,11 @@ export function TripCard({name, from, to, elements, id}) {
         })  
         if(res.status === 201){
           const editedElement = {item:editedItem, quantity:editedQuantity}
-          addedElements.splice(i, 1)
-          const newElement = [...addedElements, editedElement];
-          console.log('newElements riga 70: '+ JSON.stringify(newElement));
+          const newElement = [
+            ...addedElements.slice(0, i), // Gli elementi precedenti all'indice i
+            editedElement,
+            ...addedElements.slice(i + 1) // Gli elementi successivi all'indice i
+          ];
           setAddedElements(newElement)
           setEditingIndex(null);
           setEditedItem("")
@@ -80,7 +91,7 @@ export function TripCard({name, from, to, elements, id}) {
           console.error(error);
       }
     } else {
-      setError('Inserisci tutti i campi')
+      setEditingIndex(null)
     }
   }
 
@@ -92,57 +103,59 @@ export function TripCard({name, from, to, elements, id}) {
 
   return(
       <div className="card">
-          <header>
-              <h2 id={id} className="marginScroll">{name}</h2>
-              <section>
-                  <div>
-                      <span>from:</span>
-                      <span>{from}</span>
-                  </div>
-                  <div>
-                      <span>to:</span>
-                      <span>{to}</span>
-                  </div>
-              </section>
-          </header>
-          <main>
-              <div> 
-                  <input value={item} onChange={(e) => setItem(e.target.value)}></input>
-                  <input type="number" className="listInput" value={quantity} onChange={(e) => setQuantity(e.target.value)}></input>
-                  <button className="openModalBtn" onClick={handleItems}><FontAwesomeIcon id='faPlus' icon={faPlus} /></button>
+        <header>
+            <h2 id={id} className="marginScroll">{name}</h2>
+            <section>
+              <div>
+                <span>from:</span>
+                <span>{from}</span>
               </div>
-              <p className={error ? "error" : "invisibile"}>{error}</p>
-          </main>
-          <section className="scrollableSection">
-              <ul>
-                  {addedElements.map((el, i)=> (
-                    <li key={i} className="elementList">
-                      <div>
-                          {editingIndex === i ? (
-                          <>
-                            <input value={editedItem} onChange={(e) => setEditedItem(e.target.value)}/>
-                            <input type="number" className="listInput" value={editedQuantity} onChange={(e) => setEditedQuantity(e.target.value)}/>
-                          </>
-                          ) : (
-                          <>
-                            <span>{el.item}</span> 
-                            <span>{el.quantity}</span>
-                          </>
-                          )}
-                      </div>
+              <div>
+                <span>to:</span>
+                <span>{to}</span>
+              </div>
+            </section>
+        </header>
+        <main>
+            <div> 
+                <input value={item} onChange={(e) => setItem(e.target.value)}></input>
+                <input type="number" className="listInput" value={quantity} onChange={(e) => setQuantity(e.target.value)}></input>
+                <button className="openModalBtn" onClick={handleItems}><FontAwesomeIcon id='faPlus' icon={faPlus} /></button>
+            </div>
+            <p className={errorPost ? "error" : "invisibile"}>{errorPost}</p>
+        </main>
+        <section className="scrollableSection">
+            <ul>
+              {addedElements.map((el, i)=> (
+                <li key={i} className="elementList">
+                  <div>
+                    {editingIndex === i ? (
+                    <>
+                      <section className="inputSection">
+                        <input value={editedItem} onChange={(e) => setEditedItem(e.target.value)} placeholder={oldItem}/>
+                        <input type="number" className="listInput" value={editedQuantity} onChange={(e) => setEditedQuantity(e.target.value)}/>
+                      </section>
                       <p className={error ? "error" : "invisibile"}>{error}</p>
-                      <div>
-                        <FontAwesomeIcon id='faTrash' icon={faTrash} onClick={() => handleDeleteElement(i)}/>
-                        {editingIndex === i ? (
-                          <FontAwesomeIcon id='faCheck' icon={faCheck} onClick={() => handleSaveChanges(i)} />
-                        ) : (
-                          <FontAwesomeIcon id="faPen" icon={faPenToSquare} onClick={() => handleEditElement(i, el.item, el.quantity)}/>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-          </section>
+                    </>
+                    ) : (
+                    <section className="inputSection">
+                      <span>{el.item}</span> 
+                      <span>{el.quantity}</span>
+                    </section>
+                    )}
+                  </div>
+                  <div>
+                    <FontAwesomeIcon id='faTrash' icon={faTrash} onClick={() => handleDeleteElement(i)}/>
+                    {editingIndex === i ? (
+                      <FontAwesomeIcon id='faCheck' icon={faCheck} onClick={() => handleSaveChanges(i)} />
+                    ) : (
+                      <FontAwesomeIcon id="faPen" icon={faPenToSquare} onClick={() => handleEditElement(i, el.item, el.quantity)}/>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+        </section>
       </div>
   ) 
   }
