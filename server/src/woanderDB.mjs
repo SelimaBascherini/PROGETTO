@@ -46,9 +46,9 @@ export async function findUser(user) {
     const usersCollection = database.collection("users");  
     let foundUser = await usersCollection.findOne(user)
     return foundUser
-  }catch(err) {
+  } catch(err) {
       console.log(err);
-  }finally {
+  } finally {
       await client.close();
   }
 }
@@ -56,34 +56,34 @@ export async function findUser(user) {
 export async function insertTrip(trip) {  
   //funzione che sarà chiamata ogniqualvolta si vorrà inserire qualcosa in una collection (che è un oggetto)
   //se ad esempio viene chiamata insertUser avrà come parametro lo user da inserire insertUser(user)
-    try {
-      await client.connect()
-      const database = client.db(process.env.NAME_DB);
-      const usersCollection = database.collection("trips");
-      const result = await usersCollection.insertOne(trip);
-      console.log(`A document was inserted with the _id: ${result.insertedId}`);
-    } catch (err) {
-        return(err.code)
-    } finally {
-        await client.close();
-    }
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);
+    const usersCollection = database.collection("trips");
+    const result = await usersCollection.insertOne(trip);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+  } catch (err) {
+      return(err.code)
+  } finally {
+      await client.close();
   }
+}
 
 export async function insertElement(elementName, newElement) {  
-    try {
-      await client.connect()
-      const database = client.db(process.env.NAME_DB);
-      const elementCollection = database.collection("trips");
-      const result = await elementCollection.updateOne(
-      { tripName: elementName },
-      { $push: { elements: newElement }}
-      )
-    } catch (err) {
-        return(err.code)
-    } finally {
-        await client.close();
-    }
+  try {
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);
+    const elementCollection = database.collection("trips");
+    const result = await elementCollection.updateOne(
+    { tripName: elementName },
+    { $push: { elements: newElement }}
+    )
+  } catch (err) {
+      return(err.code)
+  } finally {
+      await client.close();
   }
+}
 
 export async function findTrips() {
   try {
@@ -92,9 +92,9 @@ export async function findTrips() {
     const tripsCollection = database.collection("trips");  
     let foundTrips = await tripsCollection.find().toArray()
     return foundTrips
-  }catch(err) {
+  } catch(err) {
       console.log(err);
-  }finally {
+  } finally {
       await client.close();
   }
 }
@@ -148,5 +148,21 @@ export async function editElement(name, oldItem, oldquantity, newElement){
       return(err.code)
   } finally {
       await client.close();
+  }
+}
+
+export async function editTrip(oldTripName, newTrip){
+  try{
+    await client.connect()
+    const database = client.db(process.env.NAME_DB);
+    const tripsCollection = database.collection("trips");
+    const result = await tripsCollection.updateOne(
+      { tripName: oldTripName },
+      { $set: { tripName: newTrip.tripName, from: newTrip.from, to: newTrip.to } }
+    )
+  } catch(err){
+    return(err.code)
+  } finally{
+    await client.close();
   }
 }

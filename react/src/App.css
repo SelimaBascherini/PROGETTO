@@ -1,3 +1,10 @@
 .wrapper {
     padding: 20px;
 }
+
+:root {
+    --line: 1px solid #D4D2D2;
+    --bgGrad: linear-gradient(90deg, rgba(185,131,255,1) 1%, rgba(185,131,255,1) 15%, rgba(148,218,255,1) 100%);
+    --paletteBlue: #94daffa6; 
+    --inputColor: rgb(89, 99, 248);
+  }
